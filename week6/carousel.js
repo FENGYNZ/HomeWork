@@ -17,34 +17,49 @@ function setSize (width,height){
 
 $(document).ready(function($) {
 	//设置容器宽度
-	setSize(600,400);
-	//默认第一个小圆点是亮的
-	$(".dots").children("li").eq(0).addClass("redDot");
-
+	setSize(700,400);
+	//小圆点
+	const dot = $(".dots").children('li');
+	//左边的按钮
+	const leftIcon = $(".left-triangle");
+	//右边的按钮
+	const rightIcon = $(".right-triangle");
+	//圆点的父元素
+	const dotFather = $(".dots");
+	//展示区容器
+	const showContainer = $(".container");
+	//图片的容器
+	const container = $(".photoContainer");
 	//获取图片的宽度
-	var imgWidth = $(".photoContainer").children('img').eq(0).width();
-
+	var imgWidth = container.children('img').eq(0).width();
 	//获取原点的数量
-	var length = $(".dots").children('li').length;
+	var length = dot.length;
+	//定时器
 	var time;
-
+	// 防止重复的点击
+	var timeFlag = true;
+	// 延时装置 防止重复点击
+	var timeout;
+	//默认第一个小圆点是亮的
+	dot.eq(0).addClass("redDot");
 	//周期性播放事件
+
 	function run(){
 	clearInterval(time);
 	time = setInterval(function(){
 		//亮小圆点
-		$(".dots").children('li').each(function(){
+		dot.each(function(){
 			//如果是当前图片
 			if($(this).hasClass("redDot")){
 				num = $(this).index()+ 1;
 			//图片移动
-				$(".photoContainer").animate({
+				container.animate({
 					//去掉收尾用于衔接的图片的宽度
 					left :-num*imgWidth - imgWidth + "px"
 				},800);
 				//到达最后一张，从头开始
 				if(num == length){
-					$(".photoContainer").animate({
+					container.animate({
 						left:-imgWidth+"px"
 					},0);
 					num = 0;
@@ -52,75 +67,111 @@ $(document).ready(function($) {
 			}
 		});
 			//改变相应小圆点的样式
-			$(".dots").children('li').eq(num).addClass("redDot");
+			dot.eq(num).addClass("redDot");
 			//移除其他小点的样式
-			$(".dots").children('li').eq(num).siblings("li").removeClass('redDot');
+			dot.eq(num).siblings("li").removeClass('redDot');
 		},2000);
 	}
 	run();
 
+	
 	//左边按钮添加事件
-	$(".left-triangle").click(function(event) {
-		var flag; 
+	leftIcon.click(function(event) {
+		if(timeFlag){
+			timeFlag = false;
+		let flag; 
 		//判断当前在哪一个照片
-		$(".dots").children('li').each(function(){
+		dot.each(function(){
 			//将图片容器向右移动
 			if($(this).hasClass('redDot')){
 				flag = $(this).index() - 1;
-					$(".photoContainer").animate({left: -flag * imgWidth - imgWidth+"px"}, 300);
+					container.animate({left: -flag * imgWidth - imgWidth+"px"}, 300);
 				//当达到最左边的时候
 				if(flag < 0){
 					flag = length-1;
-					$(".photoContainer").animate({left: -flag * imgWidth - imgWidth+"px"}, 0);
+					container.animate({left: -flag * imgWidth - imgWidth+"px"}, 0);
 				}
 
 			}
 		});
 		//图标按钮改变
-		$(".dots").children('li').eq(flag).addClass('redDot');
-		$(".dots").children('li').eq(flag).siblings('li').removeClass('redDot');
+		dot.eq(flag).addClass('redDot');
+		dot.eq(flag).siblings('li').removeClass('redDot');
+		//一定时间后 才能变化
+		if(!timeout){
+		timeout=setTimeout(
+			function(){
+				timeFlag = true;
+				timeout = null;//清楚重复设置的延时
+			},2000
+		);
+		}
+	}
 	});
 
 
 	//右边按钮添加事件
-	$(".right-triangle").click(function(event) {
-		var flag ;//判断当前在哪一个照片
-		$(".dots").children('li').each(function(){
+	rightIcon.click(function(event) {
+		let flag ;//判断当前在哪一个照片
+		if(timeFlag){
+			timeFlag = false;
+		dot.each(function(){
 			//将图片容器向左移动
 			if($(this).hasClass('redDot')){
 				flag = $(this).index() + 1;
 				console.log(flag);
-				$(".photoContainer").animate({left: -flag * imgWidth - imgWidth +"px"}, 300);
+				container.animate({left: -flag * imgWidth - imgWidth +"px"}, 300);
 				//当达到最右边的时候 回到最左边
 				if(flag == length){
 					flag = 0;
-					$(".photoContainer").animate({left: -imgWidth + "px"}, 0);
+					container.animate({left: -imgWidth + "px"}, 0);
 				}
 			}
 		});
 		//图标按钮改变
-		$(".dots").children('li').eq(flag).addClass('redDot');
-		$(".dots").children('li').eq(flag).siblings('li').removeClass('redDot');
+		dot.eq(flag).addClass('redDot');
+		dot.eq(flag).siblings('li').removeClass('redDot');
+	}
+	//防止重复提交
+	if(!timeout){
+		timeout=setTimeout(
+			function(){
+				timeFlag = true;
+				timeout = null;//清楚重复设置的延时
+			},1000
+		);
+		}
 	});
 
 	//给小点添加事件 事件委托
-	$(".dots").on("click","li",function(event) {
+	dotFather.on("click","li",function(event) {
+		if(timeFlag){
+			timeFlag = false;
 		$(this).addClass('redDot');
 		$(this).siblings('li').removeClass('redDot');
 		//获取当前序号
-		var flag = $(this).index();
-		$(".photoContainer").animate({
+		let flag = $(this).index();
+		container.animate({
 			left: -flag*imgWidth - imgWidth + "px"},
 			300);
+		}
+		//防止重复点击
+		if(!timeout){
+			timeout=setTimeout(
+				function(){
+					timeFlag = true;
+					timeout = null;//清楚重复设置的延时
+				},1000
+			);
+			}
 	});
 
-		//鼠标移动到窗口内
-	$(".container").mousemove(function(event) {
+	//鼠标移动到窗口内
+	showContainer.mousemove(function(event) {
 		clearInterval(time);
 	});
-	$(".container").mouseout(function(event) {
+	//鼠标移动出窗口
+	showContainer.mouseout(function(event) {
 		run();
 	});
 });
-
-
