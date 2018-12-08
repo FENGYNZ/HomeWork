@@ -7,17 +7,10 @@ $("#add").click(function() {
 	//添加DOM节点
 	$("#ul").append(li);
 	li.append(iconDelet);
-	//事件绑定
-	// $("#ul").on("click",".li",function(event) {
-	// 	$(this).css("text-decoration","line-through");
-	// });
-	// $("#ul").on("click","#delet",function(event) {
-	// 	$(this).parent().remove();
-	// 	$(this).remove();
-	// });
-	//事件绑定2
+	事件绑定2
 	$("#ul").delegate(".li","click",function(){
-		$(this).css("text-decoration","line-through");
+		//line为封装好的属性
+		$(this).toggleClass("line");
 	});
 	$("#ul").delegate("#delet","click",function() {
 		$(this).parent().remove();
@@ -29,3 +22,12 @@ $("#add").click(function() {
 	alert("输入框不能为空");
 	}
 });
+
+	$("#ul").on("click",".li",function(event) {
+		//把属性封装 直接切换
+		$(this).toggleClass("line");
+	});
+	$("#ul").on("click","#delet",function(event) {
+		$(this).parent().remove();
+		$(this).remove();
+	});

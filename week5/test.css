@@ -34,3 +34,6 @@ li{
 	cursor: pointer;
 	outline: none;
 }
+.line{
+	text-decoration:line-through;
+}
