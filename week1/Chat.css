@@ -89,7 +89,14 @@
 	position: relative;
 	background-color: white;
 }
+.search input{
+	outline: none;
+}
+input::-webkit-search-cancel-button{
+	display: none;
+}
 .search img{
+	cursor: pointer;
 	position: absolute;left: 235px;top: 25px;
 }
 .inputSet{
@@ -107,6 +114,7 @@
 	float: left;
 }
 .chats:hover{
+	cursor: pointer;
 	border-left: 3px solid #2399f1;
 }
  .chats:hover .circle_1 {
@@ -184,8 +192,10 @@
 .tool_icon{
 	width: 25px;
 	height: 25px;
+	cursor: pointer;
 	background-color: #f3f4f8; 
 	float: left;
+
 }
 .tool_icon img{
 	position: relative;

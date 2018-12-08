@@ -14,11 +14,15 @@
 }
 .content_title img{
 	position: absolute;top:-1px;left: 115px;
+	cursor: pointer;
 }
 .content_list{
 	line-height: 25px;
 	font-size: 12px;
 	color:#b7c0cd;
+}
+.content_list li{
+	cursor: pointer;
 }
 .content_list img{
 	width: 10px;

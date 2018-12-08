@@ -24,20 +24,25 @@
 }
 .icon_blue{
 	background-color: #2a9ff6;
+	cursor: pointer;
 }
 .icon_purple{
-	background-color: #937de4
+	background-color: #937de4;
+	cursor: pointer;
 }
 .icon_red{
 	background-color: #d33013;
+	cursor: pointer;
 }
 .icon_bottom{
 	position: absolute; left: 50%;top: 95%;
 	margin-left: -40%;
+	cursor: pointer;
 }
 .bottom_icon{
 	margin-left:10px;
 	float: left;
+	cursor: pointer;
 }
 .icon_add{
 	width: 40px;
@@ -48,4 +53,5 @@
 	outline-offset: -31px;
 	margin:5px 0 5px 7px;
 	float: left;
+	cursor: pointer;
 }
